@@ -1,34 +1,67 @@
 <?php
 require '../config.php';
-require '../clases/Entrada.php';
+require '../clases/entrada.php';
+
+$errores = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $tipo = $_POST['tipo'];
-    $monto = $_POST['monto'];
-    $fecha = $_POST['fecha'];
-    
-    // Subir factura
-    $factura = $_FILES['factura']['name'];
-    $factura_tmp = $_FILES['factura']['tmp_name'];
-    $ruta_factura = "../uploads/" . $factura;
+    // Validar tipo
+    if (empty($_POST['tipo'])) {
+        $errores[] = "El campo 'Tipo' es obligatorio.";
+    } else {
+        $tipo = $_POST['tipo'];
+    }
 
-    move_uploaded_file($factura_tmp, $ruta_factura);
+    // Validar monto
+    if (empty($_POST['monto'])) {
+        $errores[] = "El campo 'Monto' es obligatorio.";
+    } elseif (!is_numeric($_POST['monto']) || $_POST['monto'] <= 0) {
+        $errores[] = "El monto debe ser un número positivo.";
+    } else {
+        $monto = $_POST['monto'];  // Asignar monto aquí
+    }
 
-    $entrada = new Entrada($tipo, $monto, $fecha, $ruta_factura);
-    $entrada->registrarEntrada($pdo);
+    // Validar fecha
+    if (empty($_POST['fecha'])) {
+        $errores[] = "El campo 'Fecha' es obligatorio.";
+    } else {
+        $fecha = $_POST['fecha'];
+    }
 
-    echo "Entrada registrada correctamente.";
+    // Validar factura (archivo)
+    if (empty($_FILES['factura']['name'])) {
+        $errores[] = "El campo 'Factura' es obligatorio.";
+    } else {
+        $factura = $_FILES['factura']['name'];
+        $factura_tmp = $_FILES['factura']['tmp_name'];
+        $ruta_factura = "../uploads/" . $factura;
+    }
+
+    // Si no hay errores, registrar la entrada
+    if (empty($errores)) {
+        move_uploaded_file($factura_tmp, $ruta_factura);
+
+        $entrada = new Entrada($tipo, $monto, $fecha, $ruta_factura);  // Usar $monto correctamente aquí
+        $entrada->registrarEntrada($pdo);
+
+        echo "Entrada registrada correctamente.";
+    } else {
+        // Mostrar los errores
+        foreach ($errores as $error) {
+            echo "<p style='color:red;'>$error</p>";
+        }
+    }
 }
 ?>
 
 <form method="POST" enctype="multipart/form-data">
-    <label>Tipo: <input type="text" name="tipo"></label>
-    <label>Monto: <input type="number" name="monto" step="0.01"></label>
-    <label>Fecha: <input type="date" name="fecha"></label>
-    <label>Factura: <input type="file" name="factura"></label>
+    <label>Tipo: <input type="text" name="tipo" value="<?php echo isset($_POST['tipo']) ? htmlspecialchars($_POST['tipo']) : ''; ?>"></label><br>
+    <label>Monto: <input type="number" name="monto" step="0.01" min="0" value="<?php echo isset($_POST['monto']) ? htmlspecialchars($_POST['monto']) : ''; ?>"></label><br>
+    <label>Fecha: <input type="date" name="fecha" value="<?php echo isset($_POST['fecha']) ? htmlspecialchars($_POST['fecha']) : ''; ?>"></label><br>
+    <label>Factura: <input type="file" name="factura"></label><br>
     <button type="submit">Registrar Entrada</button>
 </form>
-    <form action="../dashboard.php" method="GET">
-        <button type="submit">Regresar a Dashboard</button>
-    </form>
 
+<form action="../dashboard.php" method="GET">
+    <button type="submit">Regresar a Dashboard</button>
+</form>
