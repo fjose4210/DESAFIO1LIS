@@ -14,3 +14,8 @@ echo "Bienvenido al sistema de control de finanzas";
     <li><a href="paginas/ver_salidas.php">Ver Salidas</a></li>
     <li><a href="paginas/mostrar_balance.php">Mostrar Balance</a></li>
 </ul>
+
+<!-- Botón para cerrar sesión -->
+<form method="POST" action="logout.php">
+    <button type="submit">Cerrar Sesión</button>
+</form>
