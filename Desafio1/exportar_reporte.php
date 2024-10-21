@@ -1,5 +1,5 @@
 <?php
-require_once('../tcpdf/tcpdf.php'); 
+require_once('../path_to_tcpdf/tcpdf.php'); // Asegúrate de poner la ruta correcta
 
 if (isset($_POST['imgData'])) {
     // Crear un nuevo documento PDF

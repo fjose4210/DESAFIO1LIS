@@ -84,49 +84,45 @@ $balance = $totalEntradas - $totalSalidas;
     </div>
 
     <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Entradas', 'Salidas'],
-                datasets: [{
-                    data: [<?php echo $totalEntradas; ?>, <?php echo $totalSalidas; ?>],
-                    backgroundColor: ['#1e3c72', '#FF6384'],
-                    borderColor: ['#1e3c72', '#FF6384'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                }
-            }
-        });
+document.getElementById('exportarPDF').addEventListener('click', function() {
+    var canvas = document.getElementById('myChart');
+    var imgData = canvas.toDataURL('image/png');
 
-        document.getElementById('exportarPDF').addEventListener('click', function() {
-            var canvas = document.getElementById('myChart');
-            var imgData = canvas.toDataURL('image/png');
+    // Crear un formulario para enviar los datos al servidor
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'exportar_reporte.php';
 
-            // Crear un formulario para enviar la imagen al servidor
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'exportar_reporte.php';
+    // Crear inputs ocultos para los datos del gráfico y del balance
+    var inputImg = document.createElement('input');
+    inputImg.type = 'hidden';
+    inputImg.name = 'imgData';
+    inputImg.value = imgData;
+    form.appendChild(inputImg);
 
-            // Campo oculto para pasar la imagen
-            var input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'imgData';
-            input.value = imgData;
+    var inputEntradas = document.createElement('input');
+    inputEntradas.type = 'hidden';
+    inputEntradas.name = 'totalEntradas';
+    inputEntradas.value = "<?php echo $totalEntradas; ?>";
+    form.appendChild(inputEntradas);
 
-            form.appendChild(input);
-            document.body.appendChild(form);
+    var inputSalidas = document.createElement('input');
+    inputSalidas.type = 'hidden';
+    inputSalidas.name = 'totalSalidas';
+    inputSalidas.value = "<?php echo $totalSalidas; ?>";
+    form.appendChild(inputSalidas);
 
-            // Enviar el formulario
-            form.submit();
-        });
+    var inputBalance = document.createElement('input');
+    inputBalance.type = 'hidden';
+    inputBalance.name = 'balance';
+    inputBalance.value = "<?php echo $balance; ?>";
+    form.appendChild(inputBalance);
+
+    // Enviar el formulario
+    document.body.appendChild(form);
+    form.submit();
+});
+
     </script>
 </body>
 </html>
