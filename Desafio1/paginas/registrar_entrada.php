@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $factura = $_FILES['factura']['name'];
         $factura_tmp = $_FILES['factura']['tmp_name'];
-        $ruta_factura = "../uploads/" . $factura;
+        $ruta_factura = "../uploads/Entradas/" . $factura;
     }
 
     // Si no hay errores, registrar la entrada

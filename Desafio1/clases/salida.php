@@ -24,10 +24,25 @@ class Salida {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Método para eliminar una salida
-    public function eliminarSalida($pdo, $id) {
-        $stmt = $pdo->prepare("DELETE FROM salidas WHERE id = ?");
+    // Método para eliminar una salida y su factura
+    public static function eliminarSalida($pdo, $id) {
+        // Primero obtenemos la ruta del archivo de la factura
+        $stmt = $pdo->prepare("SELECT factura FROM salidas WHERE id = ?");
         $stmt->execute([$id]);
+        $salida = $stmt->fetch(PDO::FETCH_ASSOC);  // Obtenemos los datos de la salida
+
+        if ($salida) {
+            // Eliminar la salida de la base de datos
+            $stmt = $pdo->prepare("DELETE FROM salidas WHERE id = ?");
+            $stmt->execute([$id]);
+
+            // Verificar si el archivo de la factura existe en el servidor y eliminarlo
+            $factura = $salida['factura'];
+            if (file_exists($factura)) {
+                unlink($factura);  // Eliminar el archivo
+            }
+        }
     }
 }
 ?>
+
