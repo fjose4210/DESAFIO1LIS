@@ -21,5 +21,11 @@ class Entrada {
         $stmt = $pdo->query("SELECT * FROM entradas");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // Método para eliminar una entrada
+    public static function eliminarEntrada($id, $pdo) {
+        $stmt = $pdo->prepare("DELETE FROM entradas WHERE id = ?");
+        $stmt->execute([$id]);
+    }
 }
 ?>
