@@ -5,7 +5,7 @@ if (isset($_POST['imgData'])) {
     // Crear un nuevo documento PDF
     $pdf = new TCPDF();
     $pdf->SetCreator(PDF_CREATOR);
-    $pdf->SetAuthor('Tu Nombre');
+    $pdf->SetAuthor('');
     $pdf->SetTitle('Reporte de Balance Mensual');
     $pdf->SetMargins(10, 10, 10);
     $pdf->AddPage();
@@ -14,7 +14,7 @@ if (isset($_POST['imgData'])) {
     $pdf->SetFont('helvetica', '', 12);
 
     // Título del reporte
-    $pdf->Cell(0, 10, 'Reporte Mensual de Entradas y Salidas', 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Reporte Mensual', 0, 1, 'C');
     $pdf->Ln(10); // Nueva línea
 
     // Obtener los datos enviados por POST
