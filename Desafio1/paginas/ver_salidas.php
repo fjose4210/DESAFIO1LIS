@@ -2,13 +2,20 @@
 require '../config.php'; 
 require '../clases/salida.php'; 
 
+session_start(); // Inicia la sesión para acceder a user_id
+if (!isset($_SESSION['user_id'])) {
+    die("Debe iniciar sesión para ver el balance.");
+}
+
+$user_id = $_SESSION['user_id'];
+
 // Obtener todas las salidas
-$salidas = Salida::obtenerTodas($pdo);
+$salidas = Salida::obtenerTodas($user_id, $pdo);
 
 // Eliminar salida si se solicita
 if (isset($_GET['eliminar'])) {
     $id = $_GET['eliminar'];
-    $salida = new Salida('', '', '', ''); 
+    $salida = new Salida('', '', '', '', ''); 
     $salida->eliminarSalida($pdo, $id); 
     header("Location: ver_salidas.php"); 
 }

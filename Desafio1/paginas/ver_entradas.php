@@ -2,6 +2,13 @@
 require '../config.php';
 require '../clases/entrada.php';
 
+session_start(); // Inicia la sesión para acceder a user_id
+if (!isset($_SESSION['user_id'])) {
+    die("Debe iniciar sesión para ver las entradas.");
+}
+
+$user_id = $_SESSION['user_id'];
+
 // Comprobar si se ha enviado un ID para eliminar
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
     $id = $_POST['id'];
@@ -15,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
 }
 
 // Obtener todas las entradas para mostrar en la tabla
-$entradas = Entrada::obtenerTodas($pdo);
+$entradas = Entrada::obtenerTodas($user_id, $pdo);
 ?>
 
 <!DOCTYPE html>
