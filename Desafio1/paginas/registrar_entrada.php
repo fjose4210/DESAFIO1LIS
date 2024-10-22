@@ -5,6 +5,11 @@ require '../clases/entrada.php';
 $errores = [];
 $mensajeExito = '';
 
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    die("Debe iniciar sesión para registrar una entrada.");
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validar tipo
     if (empty($_POST['tipo'])) {
@@ -42,7 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errores)) {
         move_uploaded_file($factura_tmp, $ruta_factura);
 
-        $entrada = new Entrada($tipo, $monto, $fecha, $ruta_factura);
+        $usuario_id = $_SESSION['user_id'];
+        
+        $entrada = new Entrada($tipo, $monto, $fecha, $ruta_factura, $usuario_id);
         $entrada->registrarEntrada($pdo);
         $mensajeExito = "Entrada registrada correctamente.";
     } 

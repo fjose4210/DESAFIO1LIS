@@ -39,7 +39,7 @@ if (isset($_POST['imgData'])) {
     $imgData = $_POST['imgData'];
     $imgData = str_replace('data:image/png;base64,', '', $imgData);
     $imgData = base64_decode($imgData);
-    $pdf->Image('@' . $imgData, 40, 100, 120, 90, 'PNG'); // Posición y tamaño de la imagen
+    $pdf->Image('@' . $imgData, 40, 100, 90, 90, 'PNG'); // Posición y tamaño de la imagen
 
     // Cerrar y enviar el PDF para descarga
     $pdf->Output('Reporte_Balance.pdf', 'D'); // Forzar la descarga del PDF

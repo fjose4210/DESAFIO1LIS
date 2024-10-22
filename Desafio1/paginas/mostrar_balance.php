@@ -3,8 +3,14 @@ require '../config.php';
 require '../clases/entrada.php';
 require '../clases/salida.php';
 
-$entradas = Entrada::obtenerTodas($pdo);
-$salidas = Salida::obtenerTodas($pdo);
+session_start(); // Inicia la sesión para acceder a user_id
+if (!isset($_SESSION['user_id'])) {
+    die("Debe iniciar sesión para ver el balance.");
+}
+
+$user_id = $_SESSION['user_id'];
+$entradas = Entrada::obtenerTodas($user_id, $pdo);
+$salidas = Salida::obtenerTodas($user_id, $pdo);
 
 $totalEntradas = array_sum(array_column($entradas, 'monto'));
 $totalSalidas = array_sum(array_column($salidas, 'monto'));

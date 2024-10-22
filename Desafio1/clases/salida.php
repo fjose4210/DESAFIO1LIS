@@ -4,23 +4,26 @@ class Salida {
     public $monto;
     public $fecha;
     public $factura;
+    public $usuario_id;
 
-    public function __construct($tipo, $monto, $fecha, $factura) {
+    public function __construct($tipo, $monto, $fecha, $factura, $usuario_id) {
         $this->tipo = $tipo;
         $this->monto = $monto;
         $this->fecha = $fecha;
         $this->factura = $factura;
+        $this->usuario_id = $usuario_id;
     }
 
     //Método para registrar una salida
     public function registrarSalida($pdo) {
-        $stmt = $pdo->prepare("INSERT INTO salidas (tipo, monto, fecha, factura) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$this->tipo, $this->monto, $this->fecha, $this->factura]);
+        $stmt = $pdo->prepare("INSERT INTO salidas (tipo, monto, fecha, factura, usuario_id) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$this->tipo, $this->monto, $this->fecha, $this->factura, $this->usuario_id]);
     }
 
     //Método estático para obtener todas las salidas
-    public static function obtenerTodas($pdo) {
-        $stmt = $pdo->query("SELECT * FROM salidas");
+    public static function obtenerTodas($user_id, $pdo) {
+        $stmt = $pdo->prepare("SELECT * FROM salidas WHERE usuario_id = ?");
+        $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

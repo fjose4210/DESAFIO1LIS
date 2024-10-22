@@ -5,6 +5,11 @@ require '../clases/salida.php';
 $errores = [];
 $mensaje = ''; // Variable para el mensaje
 
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    die("Debe iniciar sesión para registrar una salida.");
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validar tipo
     if (empty($_POST['tipo'])) {
@@ -42,7 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errores)) {
         move_uploaded_file($factura_tmp, $ruta_factura);
 
-        $salida = new Salida($tipo, $monto, $fecha, $ruta_factura);
+        $usuario_id = $_SESSION['user_id'];
+
+        $salida = new Salida($tipo, $monto, $fecha, $ruta_factura, $usuario_id);
         $salida->registrarSalida($pdo);
 
         $mensaje = "<div class='alert alert-success' role='alert'>Salida registrada correctamente.</div>";
