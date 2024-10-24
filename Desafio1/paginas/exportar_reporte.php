@@ -47,7 +47,7 @@ if (isset($_POST['imgData'])) {
 
     $pdf->SetTextColor(0, 0, 0);
 
-    // Tabla de balance en HTML.
+    //Tabla de balance en HTML.
     $html = '
         <style>
             .table {
@@ -119,6 +119,11 @@ if (isset($_POST['imgData'])) {
 
     //Inserta la tabla HTML en el PDF.
     $pdf->writeHTML($html, true, false, true, false, '');
+	    
+	//Añade el título del gráfico.
+    $pdf->SetFont('helvetica', 'B', 12); 
+    $pdf->SetXY(50, 135); 
+    $pdf->Cell(110, 10, 'Grafico de Balance Entradas vs Salidas', 0, 0, 'C');
 
     //Convierte la imagen del gráfico y la añade al PDF.
     $imgData = $_POST['imgData'];
