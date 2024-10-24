@@ -132,7 +132,7 @@ if (isset($_POST['imgData'])) {
     $pdf->Image('@' . $imgData, 60, 150, 90, 90, 'PNG');
 
     //Limpia el buffer antes de enviar el PDF.
-    ob_end_clean(); // Limpiar el buffer de salida.
+    ob_end_clean();
 
     //Salida del PDF.
     $pdf->Output('Reporte_Balance.pdf', 'D');
