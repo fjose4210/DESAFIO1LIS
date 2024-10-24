@@ -1,0 +1,60 @@
+CREATE DATABASE IF NOT EXISTS finanzas_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE finanzas_db;
+
+DROP TABLE IF EXISTS entradas;
+CREATE TABLE entradas (
+  id int(11) NOT NULL,
+  tipo varchar(50) DEFAULT NULL,
+  monto decimal(10,2) DEFAULT NULL,
+  fecha date DEFAULT NULL,
+  factura varchar(255) DEFAULT NULL,
+  usuario_id int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS salidas;
+CREATE TABLE salidas (
+  id int(11) NOT NULL,
+  tipo varchar(50) DEFAULT NULL,
+  monto decimal(10,2) DEFAULT NULL,
+  fecha date DEFAULT NULL,
+  factura varchar(255) DEFAULT NULL,
+  usuario_id int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS usuarios;
+CREATE TABLE usuarios (
+  id int(11) NOT NULL,
+  username varchar(50) NOT NULL,
+  password varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+ALTER TABLE entradas
+  ADD PRIMARY KEY (id),
+  ADD KEY fk_usuarios (usuario_id);
+
+ALTER TABLE salidas
+  ADD PRIMARY KEY (id),
+  ADD KEY fk_usuario (usuario_id);
+
+ALTER TABLE usuarios
+  ADD PRIMARY KEY (id),
+  ADD UNIQUE KEY unique_username (username);
+
+
+ALTER TABLE entradas
+  MODIFY id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE salidas
+  MODIFY id int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE usuarios
+  MODIFY id int(11) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE entradas
+  ADD CONSTRAINT fk_usuarios FOREIGN KEY (usuario_id) REFERENCES usuarios (id);
+
+ALTER TABLE salidas
+  ADD CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios (id);
+COMMIT;
