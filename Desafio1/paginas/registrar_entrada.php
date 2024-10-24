@@ -11,30 +11,30 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Validar tipo
+    //Valida tipo.
     if (empty($_POST['tipo'])) {
         $errores[] = "El campo 'Tipo' es obligatorio.";
     } else {
         $tipo = $_POST['tipo'];
     }
 
-    // Validar monto
+    //Valida monto.
     if (empty($_POST['monto'])) {
         $errores[] = "El campo 'Monto' es obligatorio.";
     } elseif (!is_numeric($_POST['monto']) || $_POST['monto'] <= 0) {
         $errores[] = "El monto debe ser un número positivo.";
     } else {
-        $monto = $_POST['monto'];  // Asignar monto aquí
+        $monto = $_POST['monto'];  //Asigna monto.
     }
 
-    // Validar fecha
+    //Valida fecha.
     if (empty($_POST['fecha'])) {
         $errores[] = "El campo 'Fecha' es obligatorio.";
     } else {
         $fecha = $_POST['fecha'];
     }
 
-    // Validar factura (archivo)
+    //Valida factura (archivo).
     if (empty($_FILES['factura']['name'])) {
         $errores[] = "El campo 'Factura' es obligatorio.";
     } else {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $ruta_factura = "../uploads/Entradas/" . $factura;
     }
 
-    // Si no hay errores, registrar la entrada
+    //Si no hay errores, registra la entrada.
     if (empty($errores)) {
         move_uploaded_file($factura_tmp, $ruta_factura);
 
@@ -102,12 +102,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2 class="text-center" style="color: #1e3c72; margin-bottom: 1rem;">Registrar Entrada</h2>
 
         <?php 
-        // Mostrar el mensaje de éxito
+        //Muestra el mensaje de éxito.
         if (!empty($mensajeExito)) {
             echo "<div class='alert alert-success' role='alert' style='margin-bottom: 20px;'>$mensajeExito</div>";
         }
 
-        // Mostrar los errores directamente
+        //Muestra los errores directamente.
         if (!empty($errores)) {
             foreach ($errores as $error) {
                 echo "<div class='alert alert-danger' role='alert' style='margin-bottom: 20px;'>$error</div>";

@@ -3,14 +3,14 @@ session_start();
 require 'config.php';
 require 'clases/Registrar.php';
 
-// Mensaje para el registro
+//Mensaje para el registro.
 $message = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $repeat_password = $_POST['repeat_password'];
 
-    // Crear una instancia de la clase Register
+    //Crea una instancia de la clase Register.
     $register = new Register();
     
     // Intentar registrar al usuario

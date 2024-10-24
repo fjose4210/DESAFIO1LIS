@@ -2,26 +2,26 @@
 require '../config.php';
 require '../clases/entrada.php';
 
-session_start(); // Inicia la sesión para acceder a user_id
+session_start(); //Inicia la sesión para acceder a user_id.
 if (!isset($_SESSION['user_id'])) {
     die("Debe iniciar sesión para ver las entradas.");
 }
 
 $user_id = $_SESSION['user_id'];
 
-// Comprobar si se ha enviado un ID para eliminar
+//Comprueba si se ha enviado un ID para eliminar.
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
     $id = $_POST['id'];
 
-    // Llama al método estático para eliminar la entrada
+    //Llama al método estático para eliminar la entrada.
     Entrada::eliminarEntrada($id, $pdo);
 
-    // Redirigir a la misma página después de eliminar
+    //Redirige a la misma página después de eliminar.
     header('Location: ver_entradas.php?mensaje=Entrada eliminada correctamente.');
     exit();
 }
 
-// Obtener todas las entradas para mostrar en la tabla
+//Obtiene todas las entradas para mostrar en la tabla.
 $entradas = Entrada::obtenerTodas($user_id, $pdo);
 ?>
 

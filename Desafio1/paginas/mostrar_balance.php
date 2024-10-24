@@ -3,7 +3,7 @@ require '../config.php';
 require '../clases/entrada.php';
 require '../clases/salida.php';
 
-session_start(); //Inicia la sesión para acceder a user_id
+session_start(); //Inicia la sesión para acceder a user_id.
 if (!isset($_SESSION['user_id'])) {
     die("Debe iniciar sesión para ver el balance.");
 }
@@ -16,7 +16,7 @@ $totalEntradas = array_sum(array_column($entradas, 'monto'));
 $totalSalidas = array_sum(array_column($salidas, 'monto'));
 $balance = $totalEntradas - $totalSalidas;
 
-//Cálculo de los porcentajes para el gráfico
+//Cálculo de los porcentajes para el gráfico.
 $porcentajeEntradas = $totalEntradas > 0 ? round(($totalEntradas / ($totalEntradas + $totalSalidas)) * 100, 2) : 0;
 $porcentajeSalidas = $totalSalidas > 0 ? round(($totalSalidas / ($totalEntradas + $totalSalidas)) * 100, 2) : 0;
 ?>
@@ -72,12 +72,10 @@ $porcentajeSalidas = $totalSalidas > 0 ? round(($totalSalidas / ($totalEntradas 
 </head>
 <body>
     <div class="container">
-        <!-- Título "Reporte de Balance" encerrado en un rectángulo azul -->
         <div class="title-container">
             <h2 class="text-center">Reporte de Balance</h2>
         </div>
 
-        <!-- Tabla de entradas y salidas encerrada en un cuadro azul -->
         <div class="table-container">
             <table class="table table-bordered text-center">
                 <thead>
@@ -124,7 +122,6 @@ $porcentajeSalidas = $totalSalidas > 0 ? round(($totalSalidas / ($totalEntradas 
                 </tbody>
             </table>
 
-            <!--Mostrar el balance debajo de la tabla dentro del mismo cuadro-->
             <h4 class="balance-text">Balance: $<?php echo $balance; ?></h4>
         </div>
 

@@ -1,4 +1,5 @@
 <?php
+//Inicia la sesión.
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
@@ -49,7 +50,7 @@ if (!isset($_SESSION['user_id'])) {
     </style>
 </head>
 <body>
-
+ 
     <div class="container text-center">
         <h2 class="text-center" style="color: #1e3c72; margin-bottom: 1rem;">Bienvenido al sistema de control de finanzas</h2>
         <ul class="list-group mb-3">

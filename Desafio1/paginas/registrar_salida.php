@@ -3,7 +3,7 @@ require '../config.php';
 require '../clases/salida.php';
 
 $errores = [];
-$mensaje = ''; // Variable para el mensaje
+$mensaje = ''; //Variable para el mensaje.
 
 session_start();
 if (!isset($_SESSION['user_id'])) {
@@ -11,14 +11,14 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Validar tipo
+    //Valida tipo.
     if (empty($_POST['tipo'])) {
         $errores[] = "El campo 'Tipo' es obligatorio.";
     } else {
         $tipo = $_POST['tipo'];
     }
 
-    // Validar monto
+    //Valida monto.
     if (empty($_POST['monto'])) {
         $errores[] = "El campo 'Monto' es obligatorio.";
     } elseif (!is_numeric($_POST['monto']) || $_POST['monto'] <= 0) {
@@ -27,14 +27,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $monto = $_POST['monto'];
     }
 
-    // Validar fecha
+    //Valida fecha.
     if (empty($_POST['fecha'])) {
         $errores[] = "El campo 'Fecha' es obligatorio.";
     } else {
         $fecha = $_POST['fecha'];
     }
 
-    // Validar factura (archivo)
+    //Valida factura (archivo).
     if (empty($_FILES['factura']['name'])) {
         $errores[] = "El campo 'Factura' es obligatorio.";
     } else {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $ruta_factura = "../uploads/Salidas/" . $factura;
     }
 
-    // Si no hay errores, registrar la salida
+    //Si no hay errores, registra la salida.
     if (empty($errores)) {
         move_uploaded_file($factura_tmp, $ruta_factura);
 
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $mensaje = "<div class='alert alert-success' role='alert'>Salida registrada correctamente.</div>";
     } else {
-        // Mostrar los errores
+        //Muestra los errores.
         $mensaje = "<div class='alert alert-danger' role='alert'><ul>";
         foreach ($errores as $error) {
             $mensaje .= "<li>" . htmlspecialchars($error) . "</li>";

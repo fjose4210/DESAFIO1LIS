@@ -3,7 +3,7 @@ session_start();
 require 'config.php';
 require 'clases/Login.php';
 
-// Mostrar mensaje de éxito si existe
+//Muestra mensaje de éxito si existe.
 $message = "";
 if (isset($_SESSION['mensaje'])) {
     $message = "<div class='alert alert-success' style='color: #1e3c72;'>" . $_SESSION['mensaje'] . "</div>";

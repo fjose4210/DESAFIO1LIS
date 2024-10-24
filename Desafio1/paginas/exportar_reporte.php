@@ -1,31 +1,31 @@
 <?php
-ob_start(); // Iniciar el buffer de salida
+ob_start(); //Inicia el buffer de salida.
 require_once('../tcpdf/tcpdf.php'); 
 require_once('../clases/entrada.php'); 
 require_once('../clases/salida.php'); 
-require_once('../config.php'); // Asegúrate de incluir la configuración de la base de datos
+require_once('../config.php'); //Configuración de la base de datos.
 
-session_start(); // Iniciar sesión si no se ha hecho
+session_start(); //Inicia sesión si no se ha hecho.
 if (!isset($_SESSION['user_id'])) {
     die("Debe iniciar sesión para ver el balance.");
 }
 
 if (isset($_POST['imgData'])) {
-    // Obtener el ID del usuario desde la sesión
+    //Obtiene el ID del usuario desde la sesión.
     $user_id = $_SESSION['user_id'];
 
-    // Obtener entradas y salidas usando la conexión $pdo del config.php
+    //Obtiene entradas y salidas usando la conexión $pdo del config.php.
     $entradas = Entrada::obtenerTodas($user_id, $pdo);
     $salidas = Salida::obtenerTodas($user_id, $pdo);
 
-    // Cálculo de total de entradas y salidas
+    //Cálculo de total de entradas y salidas.
     $totalEntradas = $_POST['totalEntradas'];
     $totalSalidas = $_POST['totalSalidas'];
     $balance = $_POST['balance'];
 
     $fechaActual = date('d/m/Y');
 
-    // Crear el PDF
+    //Crea el PDF.
     $pdf = new TCPDF();
     $pdf->SetCreator(PDF_CREATOR);
     $pdf->SetAuthor('');
@@ -33,22 +33,21 @@ if (isset($_POST['imgData'])) {
     $pdf->SetMargins(10, 10, 10);
     $pdf->AddPage();
 
-    // Título del PDF
+    //Título del PDF.
     $pdf->SetFont('helvetica', 'B', 16);
     $pdf->Cell(0, 10, 'Reporte de Balance Mensual', 0, 1, 'C');
     $pdf->Cell(0, 10, $fechaActual, 0, 1, 'R'); 
     $pdf->Ln(10);
 
-    // Título de la sección de balance
+    //Título de la sección de balance.
     $pdf->SetFillColor(30, 60, 114); 
     $pdf->SetTextColor(255, 255, 255); 
     $pdf->Cell(0, 10, 'Balance Mensual Detallado', 0, 1, 'C', 1);
     $pdf->Ln(5);
 
-    // Texto normal
     $pdf->SetTextColor(0, 0, 0);
 
-    // Tabla de balance en HTML
+    // Tabla de balance en HTML.
     $html = '
         <style>
             .table {
@@ -92,7 +91,7 @@ if (isset($_POST['imgData'])) {
                 </thead>
                 <tbody>';
                 
-    // Añadir cada fila de entradas y salidas a la tabla
+    //Añade cada fila de entradas y salidas a la tabla.
     $maxRows = max(count($entradas), count($salidas));
     for ($i = 0; $i < $maxRows; $i++) {
         $entrada = $entradas[$i] ?? null;
@@ -118,19 +117,19 @@ if (isset($_POST['imgData'])) {
             </table>
         </div>';
 
-    // Insertar la tabla HTML en el PDF
+    //Inserta la tabla HTML en el PDF.
     $pdf->writeHTML($html, true, false, true, false, '');
 
-    // Convertir la imagen del gráfico y añadirla al PDF
+    //Convierte la imagen del gráfico y la añade al PDF.
     $imgData = $_POST['imgData'];
     $imgData = str_replace('data:image/png;base64,', '', $imgData);
     $imgData = base64_decode($imgData);
     $pdf->Image('@' . $imgData, 60, 150, 90, 90, 'PNG');
 
-    // Limpiar el buffer antes de enviar el PDF
-    ob_end_clean(); // Limpiar el buffer de salida
+    //Limpia el buffer antes de enviar el PDF.
+    ob_end_clean(); // Limpiar el buffer de salida.
 
-    // Salida del PDF
+    //Salida del PDF.
     $pdf->Output('Reporte_Balance.pdf', 'D');
 }
 ?>
